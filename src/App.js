@@ -6,7 +6,7 @@ import About from './pages/About';
 import Cliente from './pages/Cadastros/Cliente';
 import Produto from './pages/Cadastros/Produto';
 import Tratamento from './pages/Cadastros/Tratamento';
-import TratamentoCopy from './pages/Cadastros/TratamentoCopy';
+// import TratamentoCopy from './pages/Cadastros/TratamentoCopy';
 import Usuario from './pages/Cadastros/Usuario';
 import Agendamento from './pages/Cadastros/Usuario';
 import Login from './pages/Login';
@@ -33,7 +33,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path='/cadastros/usuario' element={<Usuario />} />
               {/* <Route path='/cadastros/tratamento' element={<Tratamento />} /> */}
-              <Route path='/cadastros/tratamentoCopy' element={<TratamentoCopy />} />
+              <Route path='/cadastros/tratamento' element={<Tratamento />} />
               <Route 
                 path="/cadastros/cliente"
                 element={

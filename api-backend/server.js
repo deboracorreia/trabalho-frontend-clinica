@@ -32,13 +32,14 @@ const hashPassword = async (password) => {
 
 // Endpoint para cadastro de usuário
 app.post('/api/usuarios', async (req, res) => {
-  const { cpf, nome_completo, data_nascimento, endereco, email, celular, contato_emergencia, nome_contato_emergencia, senha } = req.body;
+  const { login, cpf, nome_completo, data_nascimento, endereco, email, celular, contato_emergencia, nome_contato_emergencia, senha } = req.body;
   
   try {
     const hashedPassword = await hashPassword(senha);
-    const query = 'INSERT INTO usuario (cpf, nome_completo, data_nascimento, endereco,  email, celular, contato_emergencia, nome_contato_emergencia, senha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO usuario (login, cpf, nome_completo, data_nascimento, endereco,  email, celular, contato_emergencia, nome_contato_emergencia, senha) ' +
+                  'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     
-    db.query(query, [cpf, nome_completo, data_nascimento, endereco, email, celular, contato_emergencia, nome_contato_emergencia, hashedPassword], (err, result) => {
+    db.query(query, [login, cpf, nome_completo, data_nascimento, endereco, email, celular, contato_emergencia, nome_contato_emergencia, hashedPassword], (err, result) => {
       if (err) throw err;
       res.status(201).send({ message: 'Usuário cadastrado com sucesso!' });
     });
@@ -114,22 +115,22 @@ app.get('/api/clientes', (req, res) => {
 
 
 // Endpoints para Tratamento
-app.post('/api/tratamento', (req, res) => {
-  const { nome_tratamento} = req.body;
-  const query = 'INSERT INTO tratamento (nome_tratamento) VALUES ( ?)';
-  db.query(query, [nome_tratamento], (err, result) => {
-    if (err) throw err;
-    res.status(201).send({ message: 'tratamento cadastrado com sucesso!' });
-  });
-});
+// app.post('/api/tratamento', (req, res) => {
+//   const { nome_tratamento} = req.body;
+//   const query = 'INSERT INTO tratamento (nome_tratamento) VALUES ( ?)';
+//   db.query(query, [nome_tratamento], (err, result) => {
+//     if (err) throw err;
+//     res.status(201).send({ message: 'tratamento cadastrado com sucesso!' });
+//   });
+// });
 
-app.get('/api/tratamento', (req, res) => {
-  const query = 'SELECT * FROM tratamento';
-  db.query(query, (err, results) => {
-    if (err) throw err;
-    res.send(results);
-  });
-});
+// app.get('/api/tratamento', (req, res) => {
+//   const query = 'SELECT * FROM tratamento';
+//   db.query(query, (err, results) => {
+//     if (err) throw err;
+//     res.send(results);
+//   });
+// });
 
 
 
@@ -152,7 +153,7 @@ app.get('/api/tratamento', (req, res) => {
   const offset = (page - 1) * limit;
 
   // Construindo a consulta SQL com paginação e busca
-  const sqlCount = `SELECT COUNT(*) AS total FROM tratamento WHERE nome LIKE ?`;
+  const sqlCount = `SELECT COUNT(*) AS total FROM tratamento WHERE nome_tratamento LIKE ?`;
   const sqlSelect = `SELECT * FROM tratamento WHERE nome_tratamento LIKE ? LIMIT ? OFFSET ?`;
 
   db.query(sqlCount, [`%${search}%`], (err, countResult) => {
@@ -210,7 +211,7 @@ app.post('/api/agendamento', (req, res) => {
       if (err) return db.rollback(() => { throw err; });
 
 
-      //QUAIS ALTERAÇÕES FAZER NESSA PARTE?
+      
       const id_agendamento = result.insertId;
       const queryAgendamento = 'INSERT INTO agendamento (data_horario, id_usuario, descricao, id_tratamento, id_consulta, id_cliente) VALUES (?, ?, ?, ?, ?, ?)';
       const itensValues = itens.map((item) => [data_horario, id_usuario, descricao, id_tratamento, id_consulta, id_cliente]);
