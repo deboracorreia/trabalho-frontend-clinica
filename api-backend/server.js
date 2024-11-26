@@ -33,12 +33,12 @@ const hashPassword = async (password) => {
 // Endpoint para cadastro de usuário
 app.post('/api/usuarios', async (req, res) => {
   const { login, cpf, nome_completo, data_nascimento, endereco, email, celular, contato_emergencia, nome_contato_emergencia, senha } = req.body;
-  
+
   try {
     const hashedPassword = await hashPassword(senha);
     const query = 'INSERT INTO usuario (login, cpf, nome_completo, data_nascimento, endereco,  email, celular, contato_emergencia, nome_contato_emergencia, senha) ' +
-                  'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    
+      'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
     db.query(query, [login, cpf, nome_completo, data_nascimento, endereco, email, celular, contato_emergencia, nome_contato_emergencia, hashedPassword], (err, result) => {
       if (err) throw err;
       res.status(201).send({ message: 'Usuário cadastrado com sucesso!' });
@@ -58,7 +58,7 @@ app.post('/api/usuarios/login', (req, res) => {
     if (results.length === 0) {
       return res.status(401).send({ message: 'Usuário não encontrado.' });
     }
-    
+
     const user = results[0];
     const passwordMatch = await bcrypt.compare(senha, user.senha);
 
@@ -132,7 +132,50 @@ app.get('/api/clientes', (req, res) => {
 //   });
 // });
 
+// Atualiza pedido
+app.put('/api/tratamento/:id', (req, res) => {
+  const idtratamento = req.params.id;
+  const { id_tratamento, nome_tratamento } = req.body;
 
+  const queryUpdateTratamento = 'UPDATE tratamento SET nome_tratamento = ? WHERE id_tratamento = ?';
+
+  db.beginTransaction((err) => {
+    if (err) throw err;
+
+    // Atualiza o pedido principal
+    db.query(queryUpdateTratamento, [nome_tratamento, id_tratamento], (err, result) => {
+      if (err) return db.rollback(() => { throw err; });
+
+      db.commit((err) => {
+        if (err) return db.rollback(() => { throw err; });
+        res.status(200).send({ message: 'Tratamento atualizado com sucesso!' });
+      });
+    });
+  });
+});
+
+app.delete('/api/tratamento/:id', (req, res) => {
+  const idtratamento = req.params.id;
+
+  // SQL para deletar o pedido
+  const query = 'DELETE FROM tratamento WHERE id_tratamento = ?';
+
+  // Executa a query de exclusão
+  db.query(query, [idtratamento], (err, result) => {
+    if (err) {
+      console.error("Erro ao excluir o tratamento:", err);
+      return res.status(500).send({ message: "Erro ao excluir o tratamento." });
+    }
+
+    if (result.affectedRows === 0) {
+      // Caso nenhum pedido tenha sido encontrado
+      return res.status(404).send({ message: "tratamento não encontrado." });
+    }
+
+    // Retorna sucesso com uma mensagem
+    res.status(200).send({ message: "tratamento excluído com sucesso!" });
+  });
+});
 
 // Endpoints para tratamento
 app.post('/api/tratamento', (req, res) => {
@@ -164,7 +207,7 @@ app.get('/api/tratamento', (req, res) => {
 
     const totalTratamentos = countResult[0].total;
     const totalPages = Math.ceil(totalTratamentos / limit);
- 
+
     db.query(sqlSelect, [`%${search}%`, limit, offset], (err, tratamentos) => {
       if (err) {
         console.error(err);
@@ -183,7 +226,7 @@ app.get('/api/tratamento', (req, res) => {
 
 // Endpoints para Consulta
 app.post('/api/consulta', (req, res) => {
-  const { descricao, data_consulta, id_tratamento} = req.body;
+  const { descricao, data_consulta, id_tratamento } = req.body;
   const query = 'INSERT INTO consulta (descricao, data_consulta, id_tratamento) VALUES ( ?, ?, ,?)';
   db.query(query, [descricao, data_consulta, id_tratamento], (err, result) => {
     if (err) throw err;
@@ -211,7 +254,7 @@ app.post('/api/agendamento', (req, res) => {
       if (err) return db.rollback(() => { throw err; });
 
 
-      
+
       const id_agendamento = result.insertId;
       const queryAgendamento = 'INSERT INTO agendamento (data_horario, id_usuario, descricao, id_tratamento, id_consulta, id_cliente) VALUES (?, ?, ?, ?, ?, ?)';
       const itensValues = itens.map((item) => [data_horario, id_usuario, descricao, id_tratamento, id_consulta, id_cliente]);
