@@ -8,18 +8,17 @@ import produto3 from '../images/imagem1.png';
 const Home = () => {
   return (
     <div className="home-container">
-      <h1>Bem-vindo ao nosso sistema de Peças e Serviços de Computadores</h1>
+      <h1>Bem-vindo ao site do consulorio odontológico Sorriso Pleno</h1>
       
       <Carousel />
       
       <div className="description">
         <p>
-          Nosso sistema é voltado para a venda e manutenção de equipamentos de informática, 
-          oferecendo produtos de alta qualidade e serviços especializados para atender todas as suas necessidades tecnológicas.
+        Bem-vindo à inovação no cuidado com seu sorriso! Nossa clínica odontológica é a mais nova no mercado, trazendo a praticidade do autoatendimento para agendamentos e tratamentos de alto padrão, garantindo conforto e excelência para você.
         </p>
       </div>
       
-      <div className="product-gallery">
+      {/* <div className="product-gallery">
         <div className="product-item">
           <img src={produto1} alt="Produto 1" />
           <p>Produto 1 - R$ 299,99</p>
@@ -33,9 +32,9 @@ const Home = () => {
           <p>Produto 3 - R$ 699,99</p>
         </div>
       </div>
-      
+       */}
       <footer className="footer">
-        <p>&copy; 2024 Peças e Serviços de Computadores. Todos os direitos reservados.</p>
+        <p>&copy; 2024 tratamentos e manutenções odontológicas. Todos os direitos reservados.</p>
       </footer>
     </div>
   );
