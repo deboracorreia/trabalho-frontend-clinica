@@ -142,25 +142,6 @@ app.get('/api/clientes', (req, res) => {
 
 
 
-
-// Endpoints para Tratamento
-// app.post('/api/tratamento', (req, res) => {
-//   const { nome_tratamento} = req.body;
-//   const query = 'INSERT INTO tratamento (nome_tratamento) VALUES ( ?)';
-//   db.query(query, [nome_tratamento], (err, result) => {
-//     if (err) throw err;
-//     res.status(201).send({ message: 'tratamento cadastrado com sucesso!' });
-//   });
-// });
-
-// app.get('/api/tratamento', (req, res) => {
-//   const query = 'SELECT * FROM tratamento';
-//   db.query(query, (err, results) => {
-//     if (err) throw err;
-//     res.send(results);
-//   });
-// });
-
 // Atualiza tratamento
 app.put('/api/tratamento/:id', (req, res) => {
   const idtratamento = req.params.id;

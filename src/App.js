@@ -29,8 +29,6 @@ function App() {
               <Route path="/sobre" element={<About />} />
               <Route path="/login" element={<Login />} />
               <Route path='/cadastros/usuario' element={<Usuario />} />
-              <Route path='/cadastros/tratamento' element={<Tratamento />} />
-              <Route path='/cadastros/cliente' element={<Cliente />} />
               <Route 
                 path="/cadastros/cliente"
                 element={
