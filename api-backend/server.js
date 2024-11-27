@@ -104,13 +104,42 @@ app.post('/api/clientes', (req, res) => {
   });
 });
 
+
+// Função para carregar clientes com paginação e busca
 app.get('/api/clientes', (req, res) => {
-  const query = 'SELECT * FROM clientes';
-  db.query(query, (err, results) => {
-    if (err) throw err;
-    res.send(results);
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const search = req.query.search || '';
+
+  const offset = (page - 1) * limit;
+
+  // Construindo a consulta SQL com paginação e busca
+  const sqlCount = `SELECT COUNT(*) AS total FROM clientes WHERE nome LIKE ?`;
+  const sqlSelect = `SELECT * FROM clientes WHERE nome LIKE ? LIMIT ? OFFSET ?`;
+
+  db.query(sqlCount, [`%${search}%`], (err, countResult) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Erro ao contar clientes.');
+    }
+
+    const totalClientes = countResult[0].total;
+    const totalPages = Math.ceil(totalClientes / limit);
+ 
+    db.query(sqlSelect, [`%${search}%`, limit, offset], (err, clientes) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Erro ao carregar clientes.');
+      }
+
+      res.json({
+        clientes: clientes,
+        totalPages: totalPages,
+      });
+    });
   });
 });
+
 
 
 
@@ -132,7 +161,7 @@ app.get('/api/clientes', (req, res) => {
 //   });
 // });
 
-// Atualiza pedido
+// Atualiza tratamento
 app.put('/api/tratamento/:id', (req, res) => {
   const idtratamento = req.params.id;
   const { id_tratamento, nome_tratamento } = req.body;
@@ -142,7 +171,7 @@ app.put('/api/tratamento/:id', (req, res) => {
   db.beginTransaction((err) => {
     if (err) throw err;
 
-    // Atualiza o pedido principal
+    // Atualiza o tratamento principal
     db.query(queryUpdateTratamento, [nome_tratamento, id_tratamento], (err, result) => {
       if (err) return db.rollback(() => { throw err; });
 
@@ -157,7 +186,7 @@ app.put('/api/tratamento/:id', (req, res) => {
 app.delete('/api/tratamento/:id', (req, res) => {
   const idtratamento = req.params.id;
 
-  // SQL para deletar o pedido
+  // SQL para deletar o tratamento
   const query = 'DELETE FROM tratamento WHERE id_tratamento = ?';
 
   // Executa a query de exclusão

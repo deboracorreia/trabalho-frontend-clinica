@@ -4,11 +4,8 @@ import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import About from './pages/About';
 import Cliente from './pages/Cadastros/Cliente';
-import Produto from './pages/Cadastros/Produto';
 import Tratamento from './pages/Cadastros/Tratamento';
-// import TratamentoCopy from './pages/Cadastros/TratamentoCopy';
 import Usuario from './pages/Cadastros/Usuario';
-import Agendamento from './pages/Cadastros/Usuario';
 import Login from './pages/Login';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -34,6 +31,7 @@ function App() {
               <Route path='/cadastros/usuario' element={<Usuario />} />
               {/* <Route path='/cadastros/tratamento' element={<Tratamento />} /> */}
               <Route path='/cadastros/tratamento' element={<Tratamento />} />
+              <Route path='/cadastros/cliente' element={<Cliente />} />
               <Route 
                 path="/cadastros/cliente"
                 element={

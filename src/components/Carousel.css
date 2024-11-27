@@ -4,12 +4,30 @@
     width: 100%;
   }
   
-  .carousel-item {
+  /*.carousel-item {
     min-width: 100%;
     text-align: center;
     padding: 50px;
     background-color: #ddd;
     color: #333;
     font-size: 1.5em;
+  }*/
+
+  .carousel-item {
+    min-width: 100%;
+    height: 400px; /* Define a altura do carrossel */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    overflow: hidden; /* Evita que a imagem ultrapasse os limites */
+    position: relative;
+    border-radius: 10px; /* (Opcional) para bordas arredondadas */
+  }
+  
+  .carousel-item img {
+    width: auto; /* Ajusta a largura automaticamente */
+    height: 100%; /* Ajusta a altura ao contêiner */
+    object-fit: contain; /* Garante que a imagem inteira fique visível */
   }
   

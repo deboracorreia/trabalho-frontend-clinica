@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import InfoIcon from '@mui/icons-material/Info';
 import PersonIcon from '@mui/icons-material/Person';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';  
 import CategoryIcon from '@mui/icons-material/Category';
 
 const Sidebar = ({ isCollapsed, onToggle }) => {
@@ -42,9 +42,9 @@ const Sidebar = ({ isCollapsed, onToggle }) => {
             <CategoryIcon />
             {!isCollapsed && <span>Tratamento</span>}
           </Link>
-          <Link to="/cadastros/pedido" className="sidebar-link">
-            <ShoppingCartIcon />
-            {!isCollapsed && <span>Pedido</span>}
+          <Link to="/cadastros/usuario" className="sidebar-link">
+            <PersonAddIcon />
+            {!isCollapsed && <span>Usuario</span>}
           </Link>
         </div>
       </div>

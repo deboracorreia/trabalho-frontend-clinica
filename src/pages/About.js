@@ -1,24 +1,29 @@
 import React from 'react';
+import imagem1 from '../images/imagem1.png';
 
 const About = () => {
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ textAlign: 'center' }}>
       <h1>Sobre Nós</h1>
-      <p>
-        Somos uma empresa especializada em peças e serviços para computadores, dedicada a oferecer 
-        soluções de alta qualidade para atender às necessidades de nossos clientes. Com anos de 
-        experiência no setor, contamos com uma ampla variedade de componentes de última geração e 
-        uma equipe de técnicos especializados.
-      </p>
-      <p>
-        Nosso compromisso é garantir que cada cliente receba o melhor atendimento e suporte, desde a 
-        escolha do produto até a instalação e manutenção. Estamos sempre prontos para oferecer as 
-        melhores soluções em tecnologia, com o objetivo de proporcionar uma experiência satisfatória 
-        e eficiente.
-      </p>
-      <p>
-        Venha nos visitar e descubra como podemos ajudar a melhorar seu sistema de tecnologia com 
-        peças de qualidade e serviços profissionais.
+      {/* Adicionando a imagem */}
+      <img 
+        src={imagem1} 
+        alt="Imagem ilustrativa sobre nós" 
+        style={{ width: '25%', height: 'auto', margin: '20px auto', display: 'block', borderRadius: '10px' }}
+      />
+      
+      <p style={{ textAlign: 'justify', margin: '0 auto', maxWidth: '80%' }}>
+      <strong>A Sorriso Pleno é um espaço dedicado ao cuidado com sua saúde bucal
+        oferecendo serviços odontológicos de alta qualidade e tecnologia para garantir a melhor experiência e resultados para você e sua família.</strong>
+      </p> <br></br>
+      <p style={{ textAlign: 'justify', margin: '0 auto', maxWidth: '80%' }}>
+      <strong>Nossa missão:</strong> Proporcionar um atendimento personalizado e humanizado, com foco no bem-estar do paciente.
+        Utilizando equipamentos modernos e técnicas inovadoras para garantir o melhor cuidado odontológico.
+      </p><br></br>
+      <p style={{ textAlign: 'justify', margin: '0 auto', maxWidth: '80%' }}>
+      <strong>Facilidade no Agendamento:</strong>  Autoagendamento Online.
+        Para tornar o seu atendimento ainda mais conveniente, oferecemos um sistema de autoagendamento no nosso site.
+        Com poucos cliques, você pode agendar sua consulta no horário que mais lhe convier, sem precisar de intermediação, tudo de forma rápida e prática.
       </p>
     </div>
   );
