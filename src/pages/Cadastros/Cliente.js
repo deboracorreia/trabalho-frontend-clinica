@@ -4,7 +4,7 @@ import axios from 'axios';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const Clientes = () => {
+const Cliente = () => {
   const [clientes, setClientes] = useState([]);
   const [cliente, setCliente] = useState({ nome: '', email: '', telefone: '', dataNascimento: '' });
   const [paginaAtual, setPaginaAtual] = useState(1);
@@ -190,4 +190,4 @@ const Clientes = () => {
   );
 };
 
-export default Clientes;
+export default Cliente;

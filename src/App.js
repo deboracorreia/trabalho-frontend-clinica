@@ -29,7 +29,6 @@ function App() {
               <Route path="/sobre" element={<About />} />
               <Route path="/login" element={<Login />} />
               <Route path='/cadastros/usuario' element={<Usuario />} />
-              {/* <Route path='/cadastros/tratamento' element={<Tratamento />} /> */}
               <Route path='/cadastros/tratamento' element={<Tratamento />} />
               <Route path='/cadastros/cliente' element={<Cliente />} />
               <Route 
@@ -40,22 +39,22 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-             {/* <Route
-                path="/cadastros/agendamento"
+             <Route
+                path="/cadastros/tratamento"
                 element={
                   <ProtectedRoute>
-                    <Agendamento />
+                    <Tratamento />
                   </ProtectedRoute>
                 }
               />
               <Route
-                path="/cadastros/consulta"
+                path="/cadastros/usuario"
                 element={
                   <ProtectedRoute>
-                    <Consulta />
+                    <Usuario />
                   </ProtectedRoute>
                 }
-              /> */}
+              />
             </Routes>
           </div>
         </div>
