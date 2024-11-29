@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const Cliente = () => {
   const [clientes, setClientes] = useState([]);
-  const [cliente, setCliente] = useState({ nome: '', email: '', telefone: '', dataNascimento: '' });
+  const [cliente, setCliente] = useState({ nome: '', email: '', telefone: '', data_nascimento: '' });
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [busca, setBusca] = useState('');
@@ -50,7 +50,8 @@ const Cliente = () => {
         await axios.post('http://localhost:3001/api/clientes', cliente);
         alert('Cliente cadastrado com sucesso!');
       }
-      setCliente({ nome: '', email: '', telefone: '', dataNascimento: '' });
+      
+      setCliente({ nome: '', email: '', telefone: '', data_nascimento: '' });
       carregarClientes();
     } catch (error) {
       console.error('Erro ao salvar cliente:', error);
@@ -58,15 +59,15 @@ const Cliente = () => {
   };
 
   const handleEdit = (cliente) => {
-    const dataFormatada = cliente.dataNascimento.split('T')[0];
-    setCliente({ ...cliente, dataNascimento: dataFormatada });
-    setEditando(cliente.id);
+    const dataFormatada = cliente.data_nascimento.split('T')[0];
+    setCliente({ ...cliente, data_nascimento: dataFormatada });
+    setEditando(cliente.id_clientes);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id_clientes) => {
     if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
       try {
-        await axios.delete(`http://localhost:3001/api/clientes/${id}`);
+        await axios.delete(`http://localhost:3001/api/clientes/${id_clientes}`);
         alert('Cliente excluído com sucesso!');
         carregarClientes();
       } catch (error) {
@@ -97,7 +98,7 @@ const Cliente = () => {
         </div>
         <div className="form-group">
           <label>Data de Nascimento:</label>
-          <input type="date" name="dataNascimento" value={cliente.dataNascimento} onChange={handleChange} required />
+          <input type="date" name="data_nascimento" value={cliente.data_nascimento} onChange={handleChange} required />
         </div>
         <button type="submit" className="button">
           {editando ? 'Atualizar Cliente' : 'Cadastrar Cliente'}
@@ -132,11 +133,11 @@ const Cliente = () => {
           <TableBody>
             {clientes && clientes.length > 0 ? (
               clientes.map((cliente) => (
-                <TableRow key={cliente.id}>
+                <TableRow key={cliente.id_clientes}>
                   <TableCell>{cliente.nome}</TableCell>
                   <TableCell>{cliente.email}</TableCell>
                   <TableCell>{cliente.telefone}</TableCell>
-                  <TableCell>{cliente.dataNascimento.split('T')[0]}</TableCell>
+                  <TableCell>{cliente.data_nascimento.split('T')[0]}</TableCell>
                   <TableCell>
                     <Button
                       variant="outlined"
@@ -147,7 +148,7 @@ const Cliente = () => {
                     <Button
                       variant="outlined"
                       color="secondary"
-                      onClick={() => handleDelete(cliente.id)}
+                      onClick={() => handleDelete(cliente.id_clientes)}
                       startIcon={<DeleteIcon />}
                     />
                   </TableCell>

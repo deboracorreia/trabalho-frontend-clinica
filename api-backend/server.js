@@ -94,11 +94,13 @@ app.post('/api/login', (req, res) => {
     });
   });
 });
+
+
 // Endpoints para Clientes
 app.post('/api/clientes', (req, res) => {
-  const { nome, email, telefone, dataNascimento } = req.body;
-  const query = 'INSERT INTO clientes (nome, email, telefone, dataNascimento) VALUES (?, ?, ?, ?)';
-  db.query(query, [nome, email, telefone, dataNascimento], (err, result) => {
+  const { nome, email, telefone, data_nascimento } = req.body;
+  const query = 'INSERT INTO clientes (nome, email, telefone, data_nascimento) VALUES (?, ?, ?, ?)';
+  db.query(query, [nome, email, telefone, data_nascimento], (err, result) => {
     if (err) throw err;
     res.status(201).send({ message: 'Cliente cadastrado com sucesso!' });
   });
@@ -131,6 +133,38 @@ app.get('/api/clientes', (req, res) => {
         console.error(err);
         return res.status(500).send('Erro ao carregar clientes.');
       }
+// Atualizar cliente
+app.put('/api/clientes/:id', (req, res) => {
+  const id_clientes = parseInt(req.params.id);  // Recebendo o ID do cliente para editar
+  const { nome, email, telefone, data_nascimento } = req.body;
+
+  const query = 'UPDATE clientes SET nome = ?, email = ?, telefone = ?, data_nascimento = ? WHERE id_clientes = ?';
+  db.query(query, [nome, email, telefone, data_nascimento, id_clientes], (err, result) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).send({ message: 'Erro ao atualizar cliente.' });
+      }
+      res.status(200).send({ message: 'Cliente atualizado com sucesso!' });
+  });
+});
+
+// Excluir cliente
+app.delete('/api/clientes/:id', (req, res) => {
+  const id_clientes = parseInt(req.params.id);  // Recebendo o ID do cliente para excluir
+
+  const query = 'DELETE FROM clientes WHERE id_clientes = ?';
+  db.query(query, [id_clientes], (err, result) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).send({ message: 'Erro ao excluir cliente.' });
+      }
+      if (result.affectedRows === 0) {
+          return res.status(404).send({ message: 'Cliente não encontrado.' });
+      }
+      res.status(200).send({ message: 'Cliente excluído com sucesso!' });
+  });
+});
+
 
       res.json({
         clientes: clientes,
@@ -229,66 +263,6 @@ app.get('/api/tratamento', (req, res) => {
         totalPages: totalPages,
       });
     });
-  });
-});
-
-
-
-// Endpoints para Consulta
-app.post('/api/consulta', (req, res) => {
-  const { descricao, data_consulta, id_tratamento } = req.body;
-  const query = 'INSERT INTO consulta (descricao, data_consulta, id_tratamento) VALUES ( ?, ?, ,?)';
-  db.query(query, [descricao, data_consulta, id_tratamento], (err, result) => {
-    if (err) throw err;
-    res.status(201).send({ message: 'consulta cadastrada com sucesso!' });
-  });
-});
-
-app.get('/api/consulta', (req, res) => {
-  const query = 'SELECT * FROM consulta';
-  db.query(query, (err, results) => {
-    if (err) throw err;
-    res.send(results);
-  });
-});
-
-// Endpoints para Agendamento
-app.post('/api/agendamento', (req, res) => {
-  const { data_horario, id_usuario, descricao, id_tratamento, id_consulta, id_cliente } = req.body;
-  const queryAgendamento = 'INSERT INTO agendamento (data_horario, id_usuario, descricao, id_tratamento, id_consulta, id_cliente) VALUES (?, ?, ?, ?, ?, ?)';
-
-  db.beginTransaction((err) => {
-    if (err) throw err;
-
-    db.query(queryAgendamento, [data_horario, id_usuario, descricao, id_tratamento, id_consulta, id_cliente], (err, result) => {
-      if (err) return db.rollback(() => { throw err; });
-
-
-
-      const id_agendamento = result.insertId;
-      const queryAgendamento = 'INSERT INTO agendamento (data_horario, id_usuario, descricao, id_tratamento, id_consulta, id_cliente) VALUES (?, ?, ?, ?, ?, ?)';
-      const itensValues = itens.map((item) => [data_horario, id_usuario, descricao, id_tratamento, id_consulta, id_cliente]);
-
-      db.query(queryItem, [itensValues], (err) => {
-        if (err) return db.rollback(() => { throw err; });
-        db.commit((err) => {
-          if (err) return db.rollback(() => { throw err; });
-          res.status(201).send({ message: 'Agendamento cadastrado com sucesso!' });
-        });
-      });
-    });
-  });
-});
-
-app.get('/api/agendamento', (req, res) => {
-  const query = `
-    SELECT agendamento.id, agendamento.data_horario, agendamento.id_usuario, agendamento.descricao, clientes.nome as clientes
-    FROM pedidos
-    JOIN agendamento ON agendamento.clientesId = clientes.id
-  `;
-  db.query(query, (err, results) => {
-    if (err) throw err;
-    res.send(results);
   });
 });
 
